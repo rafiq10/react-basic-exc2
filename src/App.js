@@ -1,36 +1,43 @@
-import React from 'react';
-import CharComponent from './CharComponent/CharComponent';
-import ValidationComponent from './ValidationComponent/ValidationComponent';
+import React, { Component } from 'react';
 import './App.css';
+import ValidationComponent from './ValidationComponent/ValidationComponent';
+import CharComponent from './CharComponent/CharComponent';
 
-class App extends React.Component {
+class App extends Component {
   state = {
-    charsArr: [],
-    theWord: '',
+    userInput: ''
   }
 
-  onInputChangeHandler = (event) => {
-    this.setState({
-      theWord: event.target.value,
-      charsArr: event.target.value.split(''),
-    })
+  inputChangedHandler = ( event ) => {
+    this.setState( { userInput: event.target.value } );
   }
 
-  render() {
-    let theChars = (
-      <div>
-        {this.state.charsArr.map((myChar, index) => {
-          return <CharComponent myChar={myChar} />
-        })}
-      </div>
-    )
+  deleteCharHandler = ( index ) => {
+    const text = this.state.userInput.split('');
+    text.splice(index, 1);
+    const updatedText = text.join('');
+    this.setState({userInput: updatedText});
+  }
+
+  render () {
+    const charList = this.state.userInput.split('').map((ch, index) => {
+      return <CharComponent 
+        character={ch} 
+        key={index}
+        clicked={() => this.deleteCharHandler(index)} />;
+    });
 
     return (
-      <div>
-        <input type="text" onChange={this.onInputChangeHandler} ></input>
-        <br /><br />
-        <ValidationComponent theWord={this.state.theWord}/>
-        {theChars}
+      <div className="App">
+
+        <hr />
+        <input
+          type="text"
+          onChange={this.inputChangedHandler}
+          value={this.state.userInput} />
+        <p>{this.state.userInput}</p>
+        <ValidationComponent inputLength={this.state.userInput.length} />
+        {charList}
       </div>
     );
   }

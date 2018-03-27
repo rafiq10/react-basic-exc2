@@ -13,14 +13,19 @@ const ValidationComponent = (props) =>{
         padding: "8px",
         margin: "8px"
     }
+    let msgText = '';
+    let mystyle = {};
 
-    if(props.theWord.length>5){
-        return (<div style={invalidStyle}><p >Text too long</p></div>);
+    if(props.inputLength>5){
+        msgText='Text too long';
+        mystyle = invalidStyle;
     }
         else
     {
-        return (<p style={validStyle}>Text valid</p>);
+        msgText='Text valid';
+        mystyle = validStyle;
     }
+    return <p style={mystyle}>{msgText}</p>
 }
 
 export default ValidationComponent;
